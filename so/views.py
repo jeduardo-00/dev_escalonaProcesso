@@ -1,5 +1,9 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+import json
 
-def painel(request):
-    return HttpResponse('PAINEL DO SO')
+def home(request):
+    if request.method == 'POST':
+        dadosStr = request.POST.get('simulation_data')
+        dados = json.loads(dadosStr)
+        print(dados)    
+    return render(request, 'telaPrincipal.html')

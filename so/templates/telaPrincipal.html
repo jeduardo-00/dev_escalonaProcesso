@@ -1,0 +1,68 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador de SO - Round Robin</title>
+    <link rel="stylesheet" href="{% static "css/style.css" %}">
+</head>
+<body>
+    <div class="container">
+        
+        <div id="screen-start" class="screen active">
+            <h1>Simulador de SO</h1>
+            <p>Escalonamento Round-Robin com E/S</p>
+            <button class="btn primary" onclick="goToScreen('screen-general')">Iniciar Simulação</button>
+        </div>
+
+        <div id="screen-general" class="screen">
+            <h2>Configurações Gerais</h2>
+            <div class="form-group">
+                <label for="num-processes">Quantidade de Processos (N):</label>
+                <input type="number" id="num-processes" min="1" placeholder="Ex: 4">
+            </div>
+            <div class="form-group">
+                <label for="quantum">Quantum da CPU:</label>
+                <input type="number" id="quantum" min="1" placeholder="Ex: 4">
+            </div>
+            <div class="form-group">
+                <label for="sim-time">Tempo Total de Simulação:</label>
+                <input type="number" id="sim-time" min="1" placeholder="Ex: 100">
+            </div>
+            <div class="actions">
+                <button class="btn secondary" onclick="goToScreen('screen-start')">Voltar</button>
+                <button class="btn primary" onclick="startProcessConfig()">Avançar</button>
+            </div>
+        </div>
+
+        <div id="screen-process" class="screen">
+            <h2 id="process-title">Processo 1 de N</h2>
+            <div class="form-group">
+                <label for="cpu-time">Tempo de CPU (por rodada):</label>
+                <input type="number" id="cpu-time" min="1" placeholder="Ex: 2">
+            </div>
+            <div class="form-group">
+                <label for="io-time">Tempo de Disco/ES (por rodada):</label>
+                <input type="number" id="io-time" min="1" placeholder="Ex: 2">
+            </div>
+            <div class="form-group">
+                <label for="rounds">Quantidade de Rodadas:</label>
+                <input type="number" id="rounds" min="1" placeholder="Ex: 2">
+            </div>
+            <div class="actions">
+                <button class="btn secondary" id="btn-back-process" onclick="previousProcess()">Voltar</button>
+                <button class="btn primary" id="btn-next-process" onclick="saveProcessAndNext()">Próximo Processo</button>
+            </div>
+        </div>
+
+        <form id="django-form" method="POST" action="{% url 'home' %}" style="display: none;">
+            {% csrf_token %}
+            <input type="hidden" name="simulation_data" id="simulation-data-input">
+        </form>
+
+    </div>
+    
+    <script src="{% static "js/script.js" %}"></script>
+</body>
+</html>
