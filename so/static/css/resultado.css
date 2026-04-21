@@ -1,0 +1,309 @@
+:root {
+    /* Cores dos Processos */
+    --p1-color: #42d4f4; 
+    --p2-color: #ffe119; 
+    --p3-color: #3cb44b; 
+    --p4-color: #f58231; 
+    --ocioso-color: #e0e0e0;
+    
+    /* Paleta Principal */
+    --bg-main: #f8fafc;
+    --card-bg: #ffffff;
+    --text-dark: #1e293b;
+    --text-muted: #64748b;
+    --border-color: #e2e8f0;
+    
+    /* Botões */
+    --primary: #3b82f6;
+    --primary-hover: #2563eb;
+    --secondary: #94a3b8;
+    --secondary-hover: #64748b;
+    --restart-color: #f59e0b;
+    --restart-hover: #d97706;
+}
+
+/* Reset e Body */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background-color: var(--bg-main);
+    color: var(--text-dark);
+    padding: 2rem;
+    margin: 0;
+}
+
+.dashboard-container { 
+    max-width: 1300px; 
+    margin: 0 auto; 
+}
+
+.dashboard-header { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    margin-bottom: 1.5rem; 
+}
+
+.dashboard-header h1 { margin: 0; }
+.dashboard-header p { margin: 5px 0 0 0; color: var(--text-muted); }
+
+/* Grid e Cards base */
+.grid-layout { 
+    display: grid; 
+    grid-template-columns: 2fr 1fr; 
+    gap: 1.5rem; 
+}
+
+.card { 
+    background: var(--card-bg); 
+    border-radius: 12px; 
+    padding: 1.5rem; 
+    border: 1px solid var(--border-color); 
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+}
+
+.timeline-card { grid-column: 1 / -1; } 
+.config-card { margin-bottom: 1.5rem; }
+
+/* Botões */
+.btn-primary, .btn-secondary, .btn-restart {
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    border: none;
+    transition: 0.2s;
+    color: white;
+    text-decoration: none;
+}
+
+.btn-primary { background-color: var(--primary); }
+.btn-primary:hover { background-color: var(--primary-hover); }
+
+.btn-secondary { background-color: var(--secondary); }
+.btn-secondary:hover { background-color: var(--secondary-hover); }
+.btn-secondary:disabled { background-color: #cbd5e1; cursor: not-allowed; }
+
+.btn-restart { background-color: var(--restart-color); }
+.btn-restart:hover { background-color: var(--restart-hover); }
+
+/* Painel de Controlos */
+.controls-card {
+    margin-bottom: 1.5rem;
+}
+
+.playback-panel {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.btn-group {
+    display: flex;
+    gap: 10px;
+}
+
+.control-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.control-group label {
+    font-size: 0.8rem;
+    font-weight: bold;
+    color: var(--text-muted);
+}
+
+.custom-select {
+    padding: 0.5rem;
+    border-radius: 6px;
+    border: 1px solid var(--border-color);
+}
+
+/* Controlos de Zoom */
+.zoom-controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background-color: #f1f5f9;
+    padding: 4px 8px;
+    border-radius: 6px;
+    border: 1px solid var(--border-color);
+}
+
+.btn-mini {
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 26px;
+    height: 26px;
+    font-weight: bold;
+    cursor: pointer;
+    color: var(--text-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-mini:hover { background: #e2e8f0; }
+
+.time-display {
+    margin-left: auto;
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+
+.highlight { color: var(--primary); font-size: 1.3rem; }
+
+/* Tabelas Genéricas */
+.table-wrapper { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; }
+th, td { padding: 1rem; text-align: left; border-bottom: 1px solid var(--border-color); }
+th { color: var(--text-muted); background-color: var(--bg-main); font-weight: 600; }
+h2 { margin-top: 0; border-bottom: 2px solid var(--bg-main); padding-bottom: 10px; font-size: 1.2rem; }
+
+/* Tabela Verde (Configurações) */
+.table-green th { 
+    background-color: #3cb44b !important; 
+    color: white !important; 
+    text-align: center; 
+}
+.table-green td { 
+    text-align: center; 
+    font-weight: 500;
+}
+
+.color-dot { 
+    display: inline-block; 
+    width: 16px; 
+    height: 16px; 
+    border-radius: 4px; 
+    border: 1px solid rgba(0,0,0,0.1); 
+}
+
+/* --- NOVO: MONITOR EM TEMPO REAL (EXECUÇÃO E FILAS) --- */
+.realtime-card { margin-bottom: 1.5rem; }
+
+/* Execução */
+.execution-container { display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 1.5rem; }
+.exec-box { flex: 1; min-width: 250px; background: #fdfdfd; border: 2px dashed #cbd5e1; border-radius: 8px; padding: 15px; text-align: center; }
+.exec-box h3 { margin-top: 0; font-size: 0.95rem; color: #475569; margin-bottom: 15px; }
+.exec-indicator { display: inline-block; padding: 10px 30px; font-size: 1.2rem; font-weight: 900; border-radius: 8px; transition: 0.2s; color: #1e293b; }
+
+/* Animação para processo rodando */
+.active-pulse { animation: pulse 1.5s infinite; }
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+/* Filas */
+.queues-container { display: flex; gap: 20px; flex-wrap: wrap; }
+.queue-box { flex: 1; min-width: 250px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 15px; }
+.queue-box h3 { margin-top: 0; font-size: 0.9rem; color: #475569; border-bottom: 1px solid #cbd5e1; padding-bottom: 8px; margin-bottom: 10px; }
+.queue-list { display: flex; gap: 8px; min-height: 34px; align-items: center; flex-wrap: wrap; }
+.queue-item { padding: 6px 14px; border-radius: 20px; font-weight: bold; color: white; font-size: 0.85rem; box-shadow: 0 2px 4px rgba(0,0,0,0.1); transition: 0.3s ease; }
+.empty-queue { font-size: 0.85rem; color: #94a3b8; font-style: italic; }
+
+/* --- GANTT (Linha do Tempo) --- */
+.gantt-wrapper { 
+    padding: 60px 0 20px 0; 
+    overflow-x: auto; 
+    position: relative;
+    border-radius: 8px;
+    background: #fdfdfd;
+}
+
+/* CORREÇÃO 2: max-content e min-width garantem que o scroll e o sticky funcionem sem quebrar */
+.gantt-track { 
+    display: flex; 
+    align-items: stretch; 
+    margin-bottom: 50px; 
+    width: max-content; 
+    min-width: 100%;
+}
+
+.track-label { 
+    position: sticky; 
+    left: 0; 
+    z-index: 100; 
+    width: 80px; 
+    background: #fdfdfd; 
+    font-weight: 800; 
+    color: #475569;
+    padding: 10px;
+    border-right: 2px solid #3b82f6;
+    display: flex;
+    align-items: center;
+}
+
+.track-bar { 
+    display: flex; 
+    flex-grow: 1; 
+    height: 44px; 
+    border: 1px solid #cbd5e1; 
+    border-radius: 4px; 
+    position: relative;
+    transition: min-width 0.2s ease; 
+}
+
+/* O bloco de execução de cada processo */
+.time-block {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: bold;
+    border-right: 1px solid rgba(0,0,0,0.1);
+    transition: width 0.3s linear;
+    position: relative; /* OBRIGATÓRIO PARA A MARCAÇÃO DE TEMPO */
+    /* CORREÇÃO 1: overflow: hidden foi removido daqui para não cortar a marcação t=X */
+}
+
+/* Nova classe para manter o texto "P1 (2ut)" limpo sem vazar */
+.label-p {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding: 0 4px;
+}
+
+/* Marcações t=X e Rodada (Inclinadas 45 graus) */
+.time-marker {
+    position: absolute;
+    bottom: 110%; 
+    right: 0;
+    transform: translateX(50%) rotate(-45deg);
+    transform-origin: bottom left; 
+    font-size: 0.75rem;
+    font-weight: 800;
+    white-space: nowrap;
+    color: #1e293b;
+    pointer-events: none; 
+    z-index: 10;
+}
+
+/* Tracinho de ligação entre o t=X e a barra */
+.time-marker::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 1px;
+    height: 10px;
+    background: #94a3b8;
+}
+
+/* Cores Dinâmicas injetadas pelo JS */
+.bg-p1 { background: var(--p1-color); } 
+.bg-p2 { background: var(--p2-color); } 
+.bg-p3 { background: var(--p3-color); color: white; } 
+.bg-p4 { background: var(--p4-color); color: white; }
+.bg-ocioso { background: var(--ocioso-color); color: transparent; }

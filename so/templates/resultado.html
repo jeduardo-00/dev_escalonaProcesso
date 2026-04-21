@@ -1,0 +1,134 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador Round Robin - Dashboard</title>
+    <link rel="stylesheet" href="{% static 'css/resultado.css' %}">
+</head>
+<body>
+    <main class="dashboard-container">
+        <header class="dashboard-header">
+            <div>
+                <h1>Execução da Simulação</h1>
+                <p>Algoritmo: Round Robin | Escalonamento Dinâmico</p>
+            </div>
+            <a href="{% url 'home' %}" class="btn-secondary">Reiniciar Parâmetros</a>
+        </header>
+
+        <section class="card controls-card">
+            <div class="playback-panel">
+                <div class="btn-group">
+                    <button id="btn-play" class="btn-primary">▶ Iniciar</button>
+                    <button id="btn-pause" class="btn-secondary" disabled>⏸ Pausar</button>
+                    <button id="btn-restart" class="btn-restart">🔄 Limpar</button>
+                </div>
+                
+                <div class="control-group">
+                    <label>Velocidade</label>
+                    <select id="speed-select" class="custom-select">
+                        <option value="1000">Lento</option>
+                        <option value="500" selected>Normal</option>
+                        <option value="100">Rápido</option>
+                    </select>
+                </div>
+
+                <div class="control-group zoom-group">
+                    <label>Zoom do Gráfico</label>
+                    <div class="zoom-controls">
+                        <button id="btn-zoom-out" class="btn-mini">-</button>
+                        <input type="range" id="zoom-slider" min="1" max="10" step="0.5" value="2">
+                        <button id="btn-zoom-in" class="btn-mini">+</button>
+                    </div>
+                </div>
+                
+                <div class="time-display">
+                    Relógio: <span id="clock-display" class="highlight">0</span> / <span id="max-time-display">0</span> ut
+                </div>
+            </div>
+        </section>
+
+        <section class="card config-section">
+            <h2>Configurações Iniciais</h2>
+            <div class="table-wrapper">
+                <table class="table-green">
+                    <thead>
+                        <tr>
+                            <th>Processo</th>
+                            <th>Cor</th>
+                            <th>CPU (ut)</th>
+                            <th>Disco (ut)</th>
+                            <th>Rodadas</th>
+                            <th>Quantum</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabela-config"></tbody>
+                </table>
+            </div>
+        </section>
+
+<section class="card realtime-card">
+            <h2>Monitor em Tempo Real</h2>
+            
+            <div class="execution-container">
+                <div class="exec-box">
+                    <h3>🖥️ Executando na CPU</h3>
+                    <div id="exec-cpu" class="exec-indicator bg-ocioso">Ocioso</div>
+                </div>
+                <div class="exec-box">
+                    <h3>💾 Executando no Disco</h3>
+                    <div id="exec-disco" class="exec-indicator bg-ocioso">Ocioso</div>
+                </div>
+            </div>
+
+            <div class="queues-container">
+                <div class="queue-box">
+                    <h3>Fila da CPU (Prontos)</h3>
+                    <div id="queue-cpu" class="queue-list"></div>
+                </div>
+                <div class="queue-box">
+                    <h3>Fila do Disco (E/S)</h3>
+                    <div id="queue-disco" class="queue-list"></div>
+                </div>
+            </div>
+        </section>
+
+        <div class="grid-layout">
+            <section class="card timeline-card">
+                <h2>Linha do Tempo (Gantt)</h2>
+                <div class="gantt-wrapper" id="gantt-container">
+                    <div class="gantt-track">
+                        <div class="track-label">CPU</div>
+                        <div class="track-bar" id="track-cpu"></div>
+                    </div>
+                    <div class="gantt-track">
+                        <div class="track-label">DISCO</div>
+                        <div class="track-bar" id="track-disco"></div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="card status-card">
+                <h2>Métricas Atuais</h2>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Processo</th>
+                                <th>Cor</th>
+                                <th>Espera</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabela-processos"></tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script id="dados-backend" type="application/json">{{ resultados_json|safe }}</script>
+    <script src="{% static 'js/resultado.js' %}"></script>
+</body>
+</html>
