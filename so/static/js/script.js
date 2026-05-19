@@ -1,16 +1,16 @@
-// Estrutura central para armazenar todos os dados antes de enviar ao Django
+// Estrutura atualizada para suportar o algoritmo
 let simulationData = {
     geral: {
+        algoritmo: "RR", // NOVO
         numProcessos: 0,
         quantum: 0,
         tempoSimulacao: 0
     },
-    processos: [] // Array que guardará os objetos de cada processo
+    processos: []
 };
 
 let currentProcessIndex = 1;
 
-// Função genérica para navegar entre as telas
 function goToScreen(screenId) {
     document.querySelectorAll('.screen').forEach(screen => {
         screen.classList.remove('active');
@@ -18,24 +18,38 @@ function goToScreen(screenId) {
     document.getElementById(screenId).classList.add('active');
 }
 
-// Valida a tela geral e prepara a tela de processos
-function startProcessConfig() {
-    const num = parseInt(document.getElementById('num-processes').value);
-    const quantum = parseInt(document.getElementById('quantum').value);
-    const simTime = parseInt(document.getElementById('sim-time').value);
+// NOVO: Controla a exibição dinâmica dos campos com base no algoritmo
+function toggleFields() {
+    const alg = document.getElementById('algorithm').value;
+    document.getElementById('quantum-group').style.display = (alg === 'RR') ? 'block' : 'none';
+}
 
-    // Validação básica
-    if (!num || !quantum || !simTime || num <= 0 || quantum <= 0 || simTime <= 0) {
-        alert("Por favor, preencha todos os campos gerais com valores maiores que zero.");
+function startProcessConfig() {
+    const alg = document.getElementById('algorithm').value;
+    const num = parseInt(document.getElementById('num-processes').value);
+    const simTime = parseInt(document.getElementById('sim-time').value);
+    
+    // Valida o Quantum apenas se for Round Robin
+    let quantum = 0;
+    if (alg === 'RR') {
+        quantum = parseInt(document.getElementById('quantum').value);
+        if (!quantum || quantum <= 0) {
+            alert("Por favor, preencha o Quantum com um valor válido.");
+            return;
+        }
+    }
+
+    if (!num || !simTime || num <= 0 || simTime <= 0) {
+        alert("Por favor, preencha todos os campos gerais com valores válidos.");
         return;
     }
 
     // Salva no estado
+    simulationData.geral.algoritmo = alg;
     simulationData.geral.numProcessos = num;
-    simulationData.geral.quantum = quantum;
+    simulationData.geral.quantum = alg === 'RR' ? quantum : 0;
     simulationData.geral.tempoSimulacao = simTime;
     
-    // Reseta array e índice caso o usuário tenha ido e voltado
     simulationData.processos = [];
     currentProcessIndex = 1;
 
@@ -43,25 +57,24 @@ function startProcessConfig() {
     goToScreen('screen-process');
 }
 
-// Atualiza os textos e botões da tela de processo atual
 function updateProcessUI() {
     document.getElementById('process-title').innerText = `Processo ${currentProcessIndex} de ${simulationData.geral.numProcessos}`;
     
-    // Limpa os campos para o próximo processo
+    // NOVO: Mostra o campo de Prioridade apenas se o algoritmo for PRIORIDADE
+    document.getElementById('priority-group').style.display = (simulationData.geral.algoritmo === 'PRIORIDADE') ? 'block' : 'none';
+    
+    document.getElementById('priority').value = '';
     document.getElementById('cpu-time').value = '';
     document.getElementById('io-time').value = '';
     document.getElementById('rounds').value = '';
 
-    // Se for o último processo, muda o botão para "Finalizar"
     const btnNext = document.getElementById('btn-next-process');
     if (currentProcessIndex === simulationData.geral.numProcessos) {
         btnNext.innerText = "Finalizar e Enviar";
-        btnNext.classList.replace('primary', 'primary'); // Mantém a cor, mas você poderia criar uma classe .success
     } else {
         btnNext.innerText = "Próximo Processo";
     }
 
-    // Gerencia o botão Voltar
     const btnBack = document.getElementById('btn-back-process');
     if (currentProcessIndex === 1) {
         btnBack.onclick = () => goToScreen('screen-general');
@@ -70,20 +83,29 @@ function updateProcessUI() {
     }
 }
 
-// Salva o processo atual e avança ou finaliza
 function saveProcessAndNext() {
     const cpu = parseInt(document.getElementById('cpu-time').value);
     const io = parseInt(document.getElementById('io-time').value);
     const rounds = parseInt(document.getElementById('rounds').value);
+    
+    // Valida a Prioridade apenas se for o algoritmo de PRIORIDADE
+    let prio = 0;
+    if (simulationData.geral.algoritmo === 'PRIORIDADE') {
+        prio = parseInt(document.getElementById('priority').value);
+        if (isNaN(prio) || prio < 0) {
+            alert("Preencha a Prioridade com um valor válido (>= 0).");
+            return;
+        }
+    }
 
     if (!cpu || !io || !rounds || cpu <= 0 || io <= 0 || rounds <= 0) {
         alert("Preencha todos os campos do processo com valores válidos.");
         return;
     }
 
-    // Adiciona o processo ao array
     simulationData.processos.push({
         id: currentProcessIndex,
+        prioridade: prio, // NOVO
         tempoCPU: cpu,
         tempoIO: io,
         rodadas: rounds
@@ -97,21 +119,14 @@ function saveProcessAndNext() {
     }
 }
 
-// Permite voltar refazendo a lógica (remove o último salvo)
 function previousProcess() {
-    simulationData.processos.pop(); // Remove o último salvo
+    simulationData.processos.pop(); 
     currentProcessIndex--;
     updateProcessUI();
 }
 
-// Empacota os dados e envia para a View do Django
 function submitDataToDjango() {
-    // Transforma o objeto JS em uma string JSON
     const jsonData = JSON.stringify(simulationData);
-    
-    // Coloca a string dentro do input hidden
     document.getElementById('simulation-data-input').value = jsonData;
-    
-    // Força o envio do formulário padrão do HTML
     document.getElementById('django-form').submit();
 }

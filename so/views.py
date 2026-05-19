@@ -1,17 +1,16 @@
-from django.shortcuts import render, redirect
-from django.urls import reverse
+from django.shortcuts import render
 import json
-from .escalonamento import simular_round_robin # Importe o arquivo aqui
+from .escalonamento import simular_escalonamento
 
 def home(request):
     if request.method == 'POST':
         dadosStr = request.POST.get('simulation_data')
         dados = json.loads(dadosStr)
         
-        # 1. Executamos a simulação com os dados recebidos
-        resultados_calculados = simular_round_robin(dados)
+        algoritmo_escolhido = dados['geral'].get('algoritmo', 'RR')
         
-        # 2. Passamos os RESULTADOS (convertidos em string JSON para o JS ler)
+        resultados_calculados = simular_escalonamento(dados, algoritmo_escolhido)
+        
         contexto = {
             'resultados_json': json.dumps(resultados_calculados)
         }

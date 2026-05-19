@@ -4,29 +4,38 @@
 
 Este projeto consiste em uma aplicação web desenvolvida utilizando **Python** e o framework **Django** para simular o funcionamento do escalonamento de processos em sistemas operacionais.
 
-O objetivo do sistema é permitir que o usuário visualize como processos competem pelo uso da CPU utilizando o algoritmo **Round Robin**, muito utilizado em sistemas operacionais para gerenciar múltiplos processos.
+O objetivo do sistema é permitir que o usuário visualize como processos competem pelo uso da CPU, oferecendo suporte a múltiplos algoritmos de escalonamento clássicos utilizados em sistemas operacionais.
 
-A aplicação permite configurar diversos parâmetros da simulação para observar como ocorre o escalonamento ao longo do tempo.
+A aplicação permite configurar diversos parâmetros da simulação de forma dinâmica para observar como ocorre o escalonamento, a preempção e as filas de espera ao longo do tempo.
+
+### Algoritmos suportados
+
+* **Round Robin (RR)** - Escalonamento dinâmico com preempção baseada em Quantum.
+* **Primeiro-a-Chegar, Primeiro-a-Ser-Atendido (FCFS)** - Escalonamento em lote simples (First-Come, First-Served).
+* **Menor-Job-Primeiro (SJF)** - Escalonamento focado no menor tempo de CPU (Shortest Job First).
+* **Escalonamento por Prioridades** - Execução baseada em níveis de prioridade definidos pelo usuário.
 
 ### Funcionalidades do sistema
 
 O simulador permite configurar:
 
+* Escolha do algoritmo de escalonamento
 * Quantidade de processos
+* Nível de prioridade (específico para o algoritmo de Prioridades)
 * Tempo de uso da CPU para cada processo
 * Tempo de uso de disco (E/S)
 * Quantidade de rodadas de execução
-* Quantum da CPU
+* Quantum da CPU (específico para o algoritmo Round Robin)
 * Tempo total da simulação
 
-Após a execução da simulação, o sistema deverá apresentar:
+Após a execução da simulação, o sistema deverá apresentar um Dashboard iterativo com:
 
-* Linha do tempo da execução dos processos
-* Ordem de execução da CPU
-* Processos finalizados
-* Informações sobre o comportamento da CPU durante a simulação
+* Linha do tempo visual da execução dos processos (Gráfico de Gantt)
+* Ordem de execução da CPU e uso de Disco (E/S)
+* Tabela com as métricas atuais (Processos finalizados e tempo de espera)
+* Filas dinâmicas de processos Prontos e em Espera (I/O)
 
-Este projeto foi desenvolvido como atividade acadêmica para auxiliar no entendimento do funcionamento do escalonamento de processos em sistemas operacionais.
+Este projeto foi desenvolvido como atividade acadêmica para auxiliar no entendimento prático e visual do funcionamento do escalonamento de processos em sistemas operacionais.
 
 ---
 
@@ -36,8 +45,7 @@ O projeto foi desenvolvido utilizando as seguintes tecnologias:
 
 * Python
 * Django
-* HTML
-* CSS
+* HTML5 e CSS3
 * JavaScript
 * Git
 * GitHub

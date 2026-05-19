@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simulador Round Robin - Dashboard</title>
+    <title>Simulador de SO - Dashboard</title>
     <link rel="stylesheet" href="{% static 'css/resultado.css' %}">
 </head>
 <body>
@@ -12,10 +12,24 @@
         <header class="dashboard-header">
             <div>
                 <h1>Execução da Simulação</h1>
-                <p>Algoritmo: Round Robin | Escalonamento Dinâmico</p>
+                <p id="algoritmo-display">Algoritmo: Carregando...</p> 
             </div>
             <a href="{% url 'home' %}" class="btn-secondary">Reiniciar Parâmetros</a>
         </header>
+
+        <table class="table-green">
+            <thead>
+                <tr>
+                    <th>Processo</th>
+                    <th>Cor</th>
+                    <th>CPU (ut)</th>
+                    <th>Disco (ut)</th>
+                    <th>Rodadas</th>
+                    <th>Prioridade</th> <th>Quantum</th>
+                </tr>
+            </thead>
+            <tbody id="tabela-config"></tbody>
+        </table>
 
         <section class="card controls-card">
             <div class="playback-panel">

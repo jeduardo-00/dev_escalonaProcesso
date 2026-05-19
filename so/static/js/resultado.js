@@ -206,11 +206,31 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function renderConfigTable() {
+        // 1. Atualiza o título do Dashboard dinamicamente
+        const nomesAlgoritmos = {
+            "RR": "Round Robin | Escalonamento Dinâmico",
+            "FCFS": "Primeiro-a-Chegar, Primeiro-a-Ser-Atendido (FCFS)",
+            "SJF": "Menor-Job-Primeiro (SJF)",
+            "PRIORIDADE": "Escalonamento por Prioridades"
+        };
+        const nomeAlg = nomesAlgoritmos[dados.config_inicial.algoritmo] || "Desconhecido";
+        document.getElementById('algoritmo-display').textContent = `Algoritmo: ${nomeAlg}`;
+
+        // 2. Renderiza a tabela
         const tb = document.getElementById('tabela-config');
         dados.config_inicial.processos.forEach(p => {
-            tb.innerHTML += `<tr><td><strong>P${p.id}</strong></td><td><div class="color-dot bg-p${p.id}"></div></td>
-                             <td>${p.cpu}</td><td>${p.disco}</td><td>${p.rodadas}</td>
-                             <td><strong>${dados.config_inicial.quantum}</strong></td></tr>`;
+            // Se não for algoritmo de prioridade, mostra um traço "-"
+            const prioridadeText = dados.config_inicial.algoritmo === 'PRIORIDADE' ? p.prioridade : '-';
+            
+            tb.innerHTML += `<tr>
+                                <td><strong>P${p.id}</strong></td>
+                                <td><div class="color-dot bg-p${p.id}"></div></td>
+                                <td>${p.cpu}</td>
+                                <td>${p.disco}</td>
+                                <td>${p.rodadas}</td>
+                                <td>${prioridadeText}</td>
+                                <td><strong>${dados.config_inicial.quantum}</strong></td>
+                             </tr>`;
         });
     }
 

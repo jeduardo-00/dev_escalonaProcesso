@@ -18,14 +18,27 @@
 
         <div id="screen-general" class="screen">
             <h2>Configurações Gerais</h2>
+            
+            <div class="form-group">
+                <label for="algorithm">Algoritmo de Escalonamento:</label>
+                <select id="algorithm" onchange="toggleFields()">
+                    <option value="RR">Round Robin (RR)</option>
+                    <option value="FCFS">Primeiro-a-Chegar (FCFS)</option>
+                    <option value="SJF">Menor-Job-Primeiro (SJF)</option>
+                    <option value="PRIORIDADE">Por Prioridades</option>
+                </select>
+            </div>
+
             <div class="form-group">
                 <label for="num-processes">Quantidade de Processos (N):</label>
                 <input type="number" id="num-processes" min="1" placeholder="Ex: 4">
             </div>
-            <div class="form-group">
+            
+            <div class="form-group" id="quantum-group">
                 <label for="quantum">Quantum da CPU:</label>
                 <input type="number" id="quantum" min="1" placeholder="Ex: 4">
             </div>
+            
             <div class="form-group">
                 <label for="sim-time">Tempo Total de Simulação:</label>
                 <input type="number" id="sim-time" min="1" placeholder="Ex: 100">
@@ -38,6 +51,12 @@
 
         <div id="screen-process" class="screen">
             <h2 id="process-title">Processo 1 de N</h2>
+            
+            <div class="form-group" id="priority-group" style="display: none;">
+                <label for="priority">Prioridade (Menor número = Maior prioridade):</label>
+                <input type="number" id="priority" min="0" placeholder="Ex: 1">
+            </div>
+
             <div class="form-group">
                 <label for="cpu-time">Tempo de CPU (por rodada):</label>
                 <input type="number" id="cpu-time" min="1" placeholder="Ex: 2">

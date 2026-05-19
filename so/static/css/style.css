@@ -74,7 +74,8 @@ label {
     font-size: 0.9rem;
 }
 
-input {
+/* Adicione o select junto com o input */
+input, select {
     width: 100%;
     padding: 10px;
     border: 1px solid #ccc;
@@ -82,9 +83,10 @@ input {
     box-sizing: border-box;
     font-size: 1rem;
     transition: border-color 0.2s;
+    background-color: white; /* Garante fundo branco no select */
 }
 
-input:focus {
+input:focus, select:focus {
     outline: none;
     border-color: var(--primary-color);
     box-shadow: 0 0 5px rgba(76, 175, 80, 0.3);
